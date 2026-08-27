@@ -1,0 +1,17 @@
+.DS_Store
+.venv*/
+__pycache__/
+*.py[cod]
+.idea/
+.vscode/
+
+# Generated experiment data and results
+artifacts/
+vendor/SpiderCam/results/
+vendor/SpiderCam/outputs/
+
+# Blender autosave/backup and previous presentation scratch work
+*.blend1
+tmp/
+output/
+outputs/

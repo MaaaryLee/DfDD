@@ -1,0 +1,3 @@
+[submodule "vendor/SpiderCam"]
+	path = vendor/SpiderCam
+	url = https://github.com/NUBIVlab/SpiderCam.git

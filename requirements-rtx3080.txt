@@ -1,0 +1,8 @@
+# Install CUDA-enabled torch/torchvision separately; see RTX3080_PIPELINE.md.
+numpy>=1.26
+matplotlib>=3.8
+scipy>=1.12
+opencv-python>=4.9
+tqdm>=4.66
+hydra-core>=1.3
+PyYAML>=6.0
