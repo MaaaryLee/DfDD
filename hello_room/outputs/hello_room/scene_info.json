@@ -1,0 +1,38 @@
+{
+  "infinigen_version": "1.19.0",
+  "source_commit": "01c39c7f7adcf7363ccbcc57c64410c69f4a4e7c",
+  "blender_version": "4.2.0",
+  "seed": 0,
+  "room": "DiningRoom",
+  "configs": [
+    "fast_solve.gin",
+    "singleroom.gin"
+  ],
+  "terrain_enabled": false,
+  "scene_objects": 200,
+  "mesh_objects": 172,
+  "materials": 182,
+  "images": 149,
+  "packed_images": 148,
+  "missing_images": [],
+  "camera": "Hello Room View",
+  "resolution": [
+    1280,
+    720
+  ],
+  "render_samples": 256,
+  "denoiser": "OPENIMAGEDENOISE",
+  "scene_file": "hello_room.blend",
+  "preview_camera_position": [
+    4.449999809265137,
+    12.800000190734863,
+    1.7999999523162842
+  ],
+  "preview_camera_target": [
+    6.0,
+    13.649999618530273,
+    1.0
+  ],
+  "preview_camera_lens_mm": 18.0,
+  "packaged_blender_version": "4.2.1 LTS"
+}

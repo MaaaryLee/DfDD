@@ -1,0 +1,13 @@
+work/
+__pycache__/
+*.py[cod]
+*.blend1
+
+# Override the parent repository's generated-output ignore for deliverables only.
+!outputs/
+outputs/*
+!outputs/hello_room/
+outputs/hello_room/*
+!outputs/hello_room/hello_room.blend
+!outputs/hello_room/hello_room.png
+!outputs/hello_room/scene_info.json
