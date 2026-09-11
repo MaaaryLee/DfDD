@@ -33,11 +33,29 @@ The script creates `.venv`, installs CUDA PyTorch plus the lightweight analysis 
 .\run_rtx3080.ps1 --blender "D:\Apps\Blender\blender.exe"
 ```
 
-To force CUDA instead of OptiX for Blender:
+Blender's compute backend defaults to `auto` (OptiX, then CUDA, then Metal, then CPU). To pin it:
 
 ```powershell
 .\run_rtx3080.ps1 --render-device cuda
 ```
+
+## macOS / Linux quick start
+
+```bash
+./run_unix.sh
+```
+
+`run_unix.sh` is the counterpart of `run_rtx3080.ps1`: it creates `.venv`, patches the vendored SpiderCam checkout, installs dependencies, and runs the same experiment. On Apple silicon it installs the default PyTorch wheels and the pipeline uses the MPS backend; elsewhere it installs the CUDA build.
+
+Blender is located automatically — `--blender`, then `$BLENDER`, then a copy under `tools/`, then `PATH`, then `/Applications/Blender.app/Contents/MacOS/Blender`. Override it the same way as on Windows:
+
+```bash
+BLENDER=/Applications/Blender.app/Contents/MacOS/Blender ./run_unix.sh
+```
+
+Blender's compute backend defaults to `auto`, which tries OptiX, then CUDA, then Metal, then falls back to CPU. Force one with `--render-device metal`. The PyTorch backend can be pinned with `DFDD_TORCH_DEVICE=cpu` if an MPS operator is missing.
+
+All the flags below work with either launcher; the PowerShell form is shown for brevity.
 
 ## Faster diagnostic run
 

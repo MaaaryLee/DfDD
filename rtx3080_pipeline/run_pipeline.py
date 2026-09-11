@@ -14,6 +14,7 @@ import numpy as np
 import yaml
 
 from analyze import analyze_one, comparison_plot, longest_working_interval, per_depth_metrics
+from platform_support import find_blender
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,26 +26,6 @@ def depth_grid(start: float, stop: float, count: int) -> list[float]:
     return [round(float(value), 6) for value in np.linspace(start, stop, count)]
 
 
-def blender_executable(explicit: str | None) -> str:
-    if explicit:
-        return explicit
-    found = shutil.which("blender")
-    if found:
-        return found
-    candidates = [
-        Path("C:/Program Files/Blender Foundation/Blender 4.6/blender.exe"),
-        Path("C:/Program Files/Blender Foundation/Blender 4.5/blender.exe"),
-        Path("C:/Program Files/Blender Foundation/Blender 4.4/blender.exe"),
-        Path("C:/Program Files/Blender Foundation/Blender 4.3/blender.exe"),
-        Path("C:/Program Files/Blender Foundation/Blender 4.2/blender.exe"),
-        Path("/Applications/Blender.app/Contents/MacOS/Blender"),
-    ]
-    for candidate in candidates:
-        if candidate.exists():
-            return str(candidate)
-    raise FileNotFoundError("Blender was not found; pass --blender with its full path")
-
-
 def run(command: list[str], cwd: Path | None = None) -> None:
     print("\n+", " ".join(command), flush=True)
     subprocess.run(command, cwd=cwd, check=True)
@@ -53,7 +34,7 @@ def run(command: list[str], cwd: Path | None = None) -> None:
 def render_dataset(args, name: str, depths: list[float]) -> Path:
     output = ARTIFACTS / "data" / name
     command = [
-        blender_executable(args.blender), "--background", "--python",
+        find_blender(args.blender), "--background", "--python",
         str(ROOT / "rtx3080_pipeline" / "render_linear_slide.py"), "--",
         "--output-dir", str(output), "--depths", *map(str, depths),
         "--focus-near", str(args.focus_near), "--focus-far", str(args.focus_far),
@@ -141,14 +122,14 @@ def write_manifest(args, full_depths, zoom_depths, full_wr, summaries) -> None:
     }
     serializable = {k: str(v) if isinstance(v, Path) else v for k, v in manifest.items()}
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
-    (ARTIFACTS / "experiment_manifest.json").write_text(json.dumps(serializable, indent=2) + "\n")
+    (ARTIFACTS / "experiment_manifest.json").write_text(json.dumps(serializable, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--blender")
     parser.add_argument("--engine", choices=("cycles", "eevee"), default="cycles")
-    parser.add_argument("--render-device", choices=("auto", "cpu", "cuda", "optix"), default="optix")
+    parser.add_argument("--render-device", choices=("auto", "cpu", "cuda", "optix", "metal"), default="auto")
     parser.add_argument("--width", type=int, default=320)
     parser.add_argument("--height", type=int, default=240)
     parser.add_argument("--samples", type=int, default=32)
